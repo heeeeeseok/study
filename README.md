@@ -1,9 +1,9 @@
 # 공부 목록 리스트
 
-##> CS
+## CS
 
-##> 알고리즘
+## 알고리즘
 
-##> Andriod
+## Andriod
 
-##> Spring boot
+## Spring boot
