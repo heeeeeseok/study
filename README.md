@@ -1,5 +1,9 @@
-# study
+# 공부 목록 리스트
 
-practice readme!
+# CS
 
-readme!
+# 알고리즘
+
+# Andriod
+
+# Spring boot
