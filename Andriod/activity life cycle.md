@@ -1,3 +1,205 @@
-# 액티비티 생명주기
+- # [액티비티 생명주기(Activity lifecycle)](https://developer.android.com/guide/components/activities/activity-lifecycle?hl=ko)
 
-![이미지](https://developer.android.com/guide/components/images/activity_lifecycle.png?hl=ko)
+  - ## 수명 주기 콜백이 필요한 상황들
+    - 사용자가 앱을 사용하는 도중에 전화가 걸려오거나 다른 앱으로 전환할 때 비정상 종료될 때
+    
+    - 사용자가 앱을 활발하게 사용하지 않는 경우 귀중한 시스템 리소스가 소비될 때
+
+    - 사용자가 앱에서 나갔다가 나중에 돌아왔을 때 사용자의 진행 상태가 저장되지 않을 때
+    
+    - 화면이 가로 방향과 세로 방향 간에 회전할 경우, 비정상 종료되거나 사용자의 진행 상태가 저장되지 않을 때
+
+
+  - ## Activity lifecycle
+  ![이미지](https://developer.android.com/guide/components/images/activity_lifecycle.png?hl=ko)
+
+
+  - # Lifecycle callbacks
+
+    - ## onCreat()
+    
+      - 시스템에서 처음 액티비티를 생성할 때 가장 먼저 호출되는 callback.
+       
+      - 기본적인 startup logic을 수행하고 액티비티 전체 생명주기에서 단 한 번만 호출됨.
+      
+        ```java
+        @Override
+        public void onCreate(Bundle savedInstanceState) {
+        // savedInstanceState에 액티비티의 이전 상태가 저장됨
+        // 만약 이전에 액티비티가 존재하지 않는 상타였다면 null이 할당됨 
+          
+          // view hierarhy 등의 액티비티 생성을 위한 superclass의 onCreate 호출
+          super.onCreate(savedInstanceState);
+          
+          // 이전 상태 복구
+          if (savedInstanceState != null) {
+            gameState = savedInstanceState.getString(GAME_STATE_KEY);
+          }
+
+          // res/layout/{파일명}.xml에 저장된 액티비티의 view layout을 설정
+          setContentView(R.layout.main_activity);
+
+          // Initialize member
+          textView = (TextView) findViewById(R.id.text_view);
+        }
+        ```
+        
+     - ## onStart()
+      
+        - onCreate 이후에 호출됨
+         
+        - 사용자에게 액티비티가 보여지게하고 상호작용이 가능하게함
+        
+     - ## onResume()
+      
+        - 사용자가 상호작용이 가능한 상태
+        
+        - 특정 상황이 오기 전까지 이 상테를 유지함 (i.e. 전화가 올 때, 다른 앱으로 이동, 전원 끔) 
+        
+        - interruptive 이벤트 발생 시 onPause() callback 호출
+        
+        - Pause 상태에서 Resume 상태로 돌아올 때 onResume()을 다시 호출
+        
+        - 이 상태일 때 **lifecycle-aware component** 는 **ON_RESUME** 이벤트를 받아 다양한 기능을 
+          사용할 수 있게 함
+          
+          ```java
+          public class CameraComponent implements LifecycleObserver {
+
+          ...
+
+          @OnLifecycleEvent(Lifecycle.Event.ON_RESUME)
+          public void initializeCamera() {
+              if (camera == null) {
+                getCamera();
+              }
+            }
+            ...
+          }
+          ```
+          **※ 위와 같은 initialization 코드를 lifecycle callback에 넣는 것은 권장되지 않음**
+          
+      - ## onPause()
+      
+          - 사용자가 액티비티를 떠났을 때 처음 호출되는 시스템 콜
+          
+          - 다음과 같은 상황에서 발생 가능
+              onResume()에서 발생한 interrupts 이벤트
+              multi-window mode
+              dialog와 같이 부분적으로 액티비티가 보이는 상황
+          
+          - 저장할 충분한 시간이 주어지지 않기 떄문에 이 생명주기에서 저장 완료 대기 시간이 필요한 저장 연산을 
+            수행하지 않는 것이 좋음
+          
+          - Resume 상태가 되거나 화면이 전부 가려질 때까지 이 상태가 유지됨
+              resume 상태가 되면 **OnResume()** callback이 다시 호출되고 메모리에 instance들이 저장돼 있어
+              re-initialize할 필요가 없다
+              
+              화면이 전부 가려지면 **OnStop()** callback이 호출됨
+          
+          - 이 상태일 때 **lifecycle-aware component** 는 **ON_PAUSE** 이벤트를 받아 카메라 등의 기능을 
+            사용할 수 없게됨
+            
+            ```java
+            public class JavaCameraComponent implements LifecycleObserver {
+              ...
+              @OnLifecycleEvent(Lifecycle.Event.ON_PAUSE)
+              public void releaseCamera() {
+                  if (camera != null) {
+                      camera.release();
+                      camera = null;
+                  }
+                }
+              ...
+              }
+            ```
+            
+       - ## onStop()
+
+          - 더 이상 사용자에게 액티비티가 표시되지 않을 때 호출됨
+
+          - 더 이상 필요 없는 자원을 해제함
+
+          - DB에 저장하는 등의 update 연산을 이 때 실행하는 것이 좋다
+          
+          - 메모리에 정보가 남아있어 Resume 상태로 돌아갈 때 re-initialize 할 필요가 없다
+
+          - 액티비티가 다시 실행되면 **onRestart()** 를, 종료되면 **onDestroy()** 가 호출된다
+
+
+      - ## onDestroy()
+
+          - 액티비티 상에서 **finish()** 가 호출되거나, **configuration change** (화면전환, 멀티 윈도우) 상황에서 발생 가능
+
+          -  **configuration change** 에 의해 종료되었다면 즉시 **onCreate()** 를 통해 new configuration 에 맞는 액티비티를 생성한다
+          
+  - # UI 상태 저장과 복구
+  
+      ### ViewModel, onSaveInstanceState(), local storage 활용 가능
+      
+      - ## Instance state
+          
+          - Back button or **finish()** 호출
+              
+              액티비티 instance가 사라짐 : 사용자와 시스템의 예상에 대한 동작이 같음
+          
+          - configuration change 또는 memory pressure
+              
+              실제 액티비티 instance는 사라지지만, 시스템을 통해서 상태 복구 가능 (instance state)
+                  
+                  instance state를 통해 복구하기 위해서는 android:id가 설정돼 있어야 한다
+                  
+       - ## onSaveInstanceState()
+       
+          - #### 액티비티가 Stop 상태가되면 시스템에서 onSaveInstanceState()를 호출한다
+          
+              ```java
+              @Override
+              public void onSaveInstanceState(Bundle savedInstanceState) {
+                  // Save the user's current game state.
+                  savedInstanceState.putInt(STATE_SCORE, currentScore);
+                  savedInstanceState.putInt(STATE_LEVEL, currentLevel);
+
+                  // Always call the superclass so it can save the view hierarchy state.
+                  super.onSaveInstanceState(savedInstanceState);
+              }
+              ```
+              **※onSaveInstanceState()는 사용자의 명시적 종료와 finish() 호출 시에는 호출되지 않는다**
+              
+            
+          - #### **onCreate()** 와 **onRestoreInstanceState()** 를 통해 저장된 상태를 복구할 수 있다
+
+              - ##### onCreate()
+              
+              ```java
+              @Override
+              protected void onCreate(Bundle savedInstanceState) {
+                super.onCreate(savedInstanceState); // Always call the superclass first
+
+                // Check whether we're recreating a previously destroyed instance.
+                if (savedInstanceState != null) {
+                    // Restore value of members from saved state.
+                    currentScore = savedInstanceState.getInt(STATE_SCORE);
+                    currentLevel = savedInstanceState.getInt(STATE_LEVEL);
+                } else {
+                    // Probably initialize members with default values for a new instance.
+                }
+                // ...
+              }
+              ```
+              
+              - ##### onRestoreInstanceState()
+              
+              ```java
+              public void onRestoreInstanceState(Bundle savedInstanceState) {
+                // Always call the superclass so it can restore the view hierarchy.
+                super.onRestoreInstanceState(savedInstanceState);
+
+                // Restore state members from saved instance.
+                currentScore = savedInstanceState.getInt(STATE_SCORE);
+                currentLevel = savedInstanceState.getInt(STATE_LEVEL);
+              }
+              ```
+          
+          
+          
