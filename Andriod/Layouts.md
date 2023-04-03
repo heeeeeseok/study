@@ -30,9 +30,9 @@
         
         - 모든 ViewGroup 클래스는 nested 클래스인 **ViewGroup.LayoutParams** 를 implemnets 한다
         
-          - 이 서브 클래스는 자식 view에 대한 property types의 정의를 포함한다
+          이 서브 클래스는 자식 view에 대한 property types의 정의를 포함한다
           
-          - 모든 자식 view들은 부모 ViewGroup에 맞는 LayoutParams를 정의해야 함
+          모든 자식 view들은 부모 ViewGroup에 맞는 LayoutParams를 정의해야 함
 
       
     - ### 2. runtime에 layout 인스턴스화
