@@ -35,7 +35,7 @@
           모든 자식 view들은 부모 ViewGroup에 맞는 LayoutParams를 정의해야 함
 
       
-    - ### 2. runtime에 layout 인스턴스화
+    - ## 2. runtime에 layout 인스턴스화
 
       ```java
       public void onCreate(Bundle savedInstanceState) {
