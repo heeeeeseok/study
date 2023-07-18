@@ -1,5 +1,5 @@
 def solution(target):
-    dp = [[] for _ in range(100 + 1)]
+    dp = [[] for _ in range(100000 + 1)]
 
     for i in range(1, 21):
         dp[i] = [1, 1]
