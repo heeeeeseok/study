@@ -24,6 +24,6 @@
     자동으로 default getter / setter 생성
     AccessLevel 지정 안하면 자동으로 public. [PUBLIC, PROTECTED, PACKAGE, PRIVATE, NONE] 사용 가능
 
-# @ToString
+## @ToString
     all non-static 필드들 출력. @ToString.Exclude 애너테이션으로 특정 필드 생략 가능
     callSuper 속성을 true로 설정하면, superclass의 toString의 출력 포함 가능
