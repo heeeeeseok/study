@@ -1,6 +1,7 @@
 ## @Controller vs @RestController
 ### @Controller
       전통적인 Spring MVC의 컨트롤러로 주로 View를 반환하기 위해 사용
+#### Spring Framework 구조
  ![](https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2Fb3McJC%2Fbtrx1IGcnGs%2F2iHFmw3bbqasfCJzwCKYuK%2Fimg.png)
  ***
  - 1. Client가 URI 형식으로 웹 서비스에 요청을 보낸다.
