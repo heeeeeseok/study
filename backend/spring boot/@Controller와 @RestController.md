@@ -25,7 +25,7 @@
   
   컨트롤러에서는 데이터를 반환하기 위해 @ResponseBody 어노테이션을 활용해야 한다. 
   
-  이를 통해 Controller도 Json 형태로 데이터를 반환 할 수 있다.
+  이를 통해 Controller도 Json 형태로 데이터를 반환 할 수 있다. (Serialize)
 
   컨트롤러를 통해 객체를 반환할 때 viewResolver 대신에 HttpMessageConverter가 동작한다.
 
