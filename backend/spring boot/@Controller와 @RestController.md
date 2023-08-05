@@ -34,7 +34,9 @@ Spring Framework 구조
 
 ## @RestController
     @RestController는 @Controller에 @ResponseBody가 추가된 것.
+    
     주 용도는 Json형태로 객체 데이터를 반환하는 것
+    
     데이터를 응답으로 제공하는 REST API를 개발할 때 주로 사용한다.
     
 
