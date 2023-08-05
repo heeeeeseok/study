@@ -1,0 +1,89 @@
+## 서블릿
+    클라이언트의 요청을 처리하고, 그 결과를 반환하는 
+    Servlet 클래스의 구현 규칙을 지킨 자바 웹 프로그래밍 기술
+
+    웹 어플리케이션 서버 내에서 실행되는 Java 프로그램이며, 요청을 받아 응답을 반환한다.
+    서블릿이란 자바를 사용하여 웹을 만들기 위해 필요한 기술이다.
+
+## 서블릿의 특징
+    클라이언트의 요청에 대해 동적으로 작동하는 웹 어플리케이션 컴포넌트
+    
+    html을 사용하여 요청에 응답한다
+
+    java Thread를 이용하여 동작한다
+
+    MVC 패턴에서 Controller로 이용된다
+
+    HTTP 프로토콜 서비스를 지원하는 javax.servelt.http.HttpServlet 클래스를 상속받는다
+
+    UDP보다 처리속도가 느리다
+
+    HTML 변경 시 Servlet을 재컴파일해야 하는 단점이 있다    
+    
+
+일반적으로 웹 서버는 정적인 페이지만을 제공한다. 그래서 동적인 페이지를 제공하기 위해서
+
+웹 서버는 다른 곳에 도움을 요청하여 동적인 페이지를 작성해야 한다.
+
+여기서 웹 서버가 동적인 페이지를 제공할 수 있도록 도와주는 어플리케이션이 서블릿이고
+
+동적인 페이지를 생성하는 어플리케이션이 CGI이다.
+
+
+## 서블릿 동작 방식
+<img src="https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Ft1.daumcdn.net%2Fcfile%2Ftistory%2F993A7F335A04179D20)https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Ft1.daumcdn.net%2Fcfile%2Ftistory%2F993A7F335A04179D20"/>
+1. 사용자가 URL을 입력하면 HTTP Request가 Servlet Container로 전송한다.<br/>
+2. 요청을 전송받은 Servlet Container는 HttpServletRequest, HttpServletResponse 객체를 생성한다.<br/>
+3. web.xml을 기반으로 사용자가 요청한 URL이 어느 서블릿에 대한 요청인지를 찾는다.<br/>
+4. 해당 서블릿에서 service메소드를 호출한 후 사용자의 GET, POST 여부에 따라 doGet() 또는 doPost()를 호출.<br/>
+5. doGet() 또는 doPost() 메소드는 동적 페이지를 생성 한 후 HttpServletResponse객체에 응답을 보낸다.<br/>
+6. 응답이 끝나면 HttpServletRequest, HttpServletResponse 두 객체를 소멸시킨다.
+
+## 서블릿 컨테이너
+    서블릿 컨테이너는 클라이언트의 요청을 받아주고 응답을 할 수 있게 웹 서버와 소켓으로 통신한다.
+    대표적으로 톰캣(Tomcat)이 있다.
+
+#### 서블릿 컨테이너의 역할
+    웹 서버와의 통신 지원
+
+    서블릿 생명주기 관리
+
+    멀티쓰레드 지원 및 관리
+
+    선언적인 보안 관리
+
+## JSP(Java Server Page)
+    서블릿은 자바 소스코드 속에 HTML코드가 들어가는 형태이고,
+    JSP는 이와 반대로 HTML 소스코드 속에 자바 소스코드가 들어가는 구조를 갖는 웹어플레케이션 프로그래밍 기술이다.
+
+    JSP는 실행 시에 자바 서블릿으로 변환되어 실행되어 서블릿과 거의 유사하다.
+    그러나 HTML 표준에 따라 작성되므로 웹 디자인에 편리하
+
+## 디스패처 서블릿
+    Dispatcher Servlet은 Http 프로토콜로 들어오는 모든 요청을 가장 먼저 받아 적합한 컨트롤러에 위임해주는
+    프론트 컨트롤러이다.
+
+    클라이언트로부터 요청이 오면 Tomcat과 같은 서블릿 컨테이너가 요청을 받는다.
+    그리고 이 모든 요청을 프론트 컨트롤러인 디스패처 서블릿이 가장 먼저 받게 된다.
+    그러면 디스패처 서블릿은 공통적인 작업을 먼저 처리한 후에 해당 요청을 처리할 컨트롤러를 찾아 작업을 위임한다.
+
+## 디스패처 서블릿의 장점
+    Spring MVC는 DispatcherServlet이 등장함에 따라 web.xml의 역할을 상당히 축소시켰다.
+    과거에 모든 서블릿을 URL 매핑을 위해 web.xml에 모두 등록해주어야 했지만
+    DispatcherServlet이 해당 어플리케이션으로 들어오는 모든 요청을 핸들링해주고 공동 작업을 처리해주면서
+    컨트롤러를 구현해놓기만 하면 디스패처 서블릿이 알아서 적합한 컨트롤러로 위임해주는 구조가 되었다.
+    
+<img src="https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FbImFbg%2FbtrGzZMTuu2%2FCkY4MiKvl5ivUJPoc5I3zk%2Fimg.png">
+1. 클라이언트의 요청을 디스패처 서블릿이 받는다.</br>
+2. 요청 정보를 통해 요청을 위임할 컨트롤러를 찾는다.</br>
+3. 요청을 컨트롤러로 위임한 핸들러 어뎁터를 찾아서 전달한다.</br>
+4. 핸들러 어뎁터가 컨트롤러로 요청을 위임한다.</br>
+5. 비즈니스 로직을 처리한다.</br>
+6. 컨트롤러가 반환값을 반환한다.</br>
+7. 핸들러 어뎁터가 반환값을 처리한다.</br>
+8. 서버의 응답을 클라이언트로 반환한다.</br></br>
+
+
+출처 : [https://mangkyu.tistory.com/14]
+    
+    
