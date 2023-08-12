@@ -119,7 +119,7 @@ Comment.associate(db);
 module.exports = db;
 ```
 
-## 쿼리 작성
+## 5. 쿼리 작성
 ```javascript
 INSERT INTO nodejs.users (name, age, married, comment) VALUES ('zero', 24, 0, '자기소개1');
 const { User } = require('../models');
