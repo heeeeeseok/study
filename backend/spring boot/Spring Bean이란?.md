@@ -3,9 +3,9 @@
 - IOC는 Inversion Of Control의 약자로 사용자의 제어권을 다른 주체에게 넘기는 것을 말한다.
 
 ## Spring Bean을 Spring IOC Container에 등록하기
-- ### 2.1 자바 어노테이션 사용
+- ### 자바 어노테이션 사용
   - @Component (@Service, @Controller, @Repository는 내부적으로 @Component를 포함)
   - @Configuration, @Bean
 
-참고 : [@Component와 @Configuration의 차이]()
+참고 : [@Component와 @Configuration의 차이](https://github.com/heeeeeseok/study/blob/main/backend/spring%20boot/%40Configuration%EC%99%80%20%40Component.md)<br/>
 출처 : [https://melonicedlatte.com/2021/07/11/232800.html]
